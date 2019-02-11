@@ -1,0 +1,21 @@
+.record_title {
+   width: 50%;
+   overflow: auto;
+ }
+
+.record_description {
+   width: 49%;
+ }
+
+ .internal_component {
+   height: inherit;
+ }
+ 
+ img.internal_component {
+   width: 1.2em;
+ }
+
+ .title_content {
+   width: 95%;
+   overflow-wrap: break-word;
+ }

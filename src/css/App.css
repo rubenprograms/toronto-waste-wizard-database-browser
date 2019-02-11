@@ -1,0 +1,53 @@
+header {
+  background-image: linear-gradient(to right, #1E5A94, #22965E);
+  color: white;
+  text-align: center;
+  font-size: 2em;
+  padding: 1em;
+}
+
+header, .favourites_title {
+  font: Arial;
+  font-weight: bold;
+}
+
+.searchbox_ele {
+  height: 100%;
+  display: inline-block;
+}
+
+input.searchbox_ele {
+  box-sizing: border-box;
+  padding: 10px;
+  width: 92%;
+}
+
+.container {
+  padding: 30px 30px;
+  overflow: auto;
+}
+
+.searchbox_container {
+  height: 50px;
+}
+
+.lookup_icon_container {
+  width: 7%;
+  height: auto;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.clear_both {
+  clear: both;
+}
