@@ -51,3 +51,7 @@ input.searchbox_ele {
 .clear_both {
   clear: both;
 }
+
+.center-text {
+  text-align: center;
+}

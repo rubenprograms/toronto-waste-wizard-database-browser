@@ -9,7 +9,7 @@ import QueryResults from './Components/QueryResults/QueryResults';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {wasteSystemData: [], wasteSystemDataRetrieved: false, matchesToQuery: [], favouritedRecords: {}};
+    this.state = { wasteSystemData: [], wasteSystemDataRetrieved: false, matchesToQuery: [], favouritedRecords: {}, userHasSearched: false };
     this.fetchData = this.fetchData.bind(this);
     this.queryWasteDatabase = this.queryWasteDatabase.bind(this);
     this.favouritingHandler = this.favouritingHandler.bind(this);
@@ -26,7 +26,7 @@ class App extends Component {
     // had struggled with it. I am aware of 'better' ways of making HTTP requests, though, like the fetch API.
     var getTorontoWasteSystemData = new XMLHttpRequest();
     var requestURL = 'https://secure.toronto.ca/cc_sr_v1/data/swm_waste_wizard_APR?limit=1000';
-    getTorontoWasteSystemData.open('GET', requestURL,  true);
+    getTorontoWasteSystemData.open('GET', requestURL, true);
     getTorontoWasteSystemData.setRequestHeader('Accept', 'application/json');
     const APP_COMPONENT = this;
     getTorontoWasteSystemData.onreadystatechange = function () {
@@ -38,7 +38,7 @@ class App extends Component {
         }
         // Before setting the state, add IDs and favourite status:
         var initializedData = APP_COMPONENT.initializeFavouriteStatus(APP_COMPONENT.initializeIDs(response));
-        APP_COMPONENT.setState({wasteSystemData: initializedData, wasteSystemDataRetrieved: true});
+        APP_COMPONENT.setState({ wasteSystemData: initializedData, wasteSystemDataRetrieved: true });
       }
     }
     getTorontoWasteSystemData.send();
@@ -64,7 +64,7 @@ class App extends Component {
       // Go through the fetched data and determine the ones that contain one of the keywords:
       var matches = [], nOfRecords = this.state.wasteSystemData.length;
       for (var i = 0; i < nOfRecords; i++) {
-        var currentRecord = this.state.wasteSystemData[i], keywordsInCurrentRecord = currentRecord.keywords.replace(',',' ').split(' ');
+        var currentRecord = this.state.wasteSystemData[i], keywordsInCurrentRecord = currentRecord.keywords.replace(',', ' ').split(' ');
         var nOfKeywordsInCurrentRecord = keywordsInCurrentRecord.length;
         for (var j = 0; j < nOfKeywordsInCurrentRecord; j++) {
           if (keywords.includes(keywordsInCurrentRecord[j]) && !matches.includes(currentRecord)) {
@@ -72,7 +72,7 @@ class App extends Component {
           }
         }
       }
-      this.setState({matchesToQuery: matches.slice(0)});
+      this.setState({ matchesToQuery: matches.slice(0), userHasSearched: true });
     } else {
       window.alert('No data can be retrieved at this time. There seems to be a problem with the provider of the Toronto Waste System Data. Please let us know so we can look into it and fix this issue.');
     }
@@ -86,15 +86,16 @@ class App extends Component {
       favouritedRecordsCopy.recordIndex = this.state.wasteSystemData[recordIndex];
     }
     wasteSystemDataCopy[recordIndex].isFavourite = wasFavourite;
-    this.setState({favouritedRecords: favouritedRecordsCopy, wasteSystemData: wasteSystemDataCopy});
+    this.setState({ favouritedRecords: favouritedRecordsCopy, wasteSystemData: wasteSystemDataCopy });
   }
-  
+
   render() {
+    const { userHasSearched } = this.state;
     return (
       <div className='App'>
-        <Header title='Toronto Waste Lookup'/>
-        <SearchBox lookup={this.queryWasteDatabase}/>
-        <QueryResults records={this.state.matchesToQuery}/>
+        <Header title='Toronto Waste Lookup' />
+        <SearchBox lookup={this.queryWasteDatabase} />
+        {userHasSearched && <QueryResults records={this.state.matchesToQuery} />}
       </div>
     );
   }
