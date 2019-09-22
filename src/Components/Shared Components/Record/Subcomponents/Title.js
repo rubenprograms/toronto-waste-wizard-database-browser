@@ -15,9 +15,10 @@ class Title extends Component {
    }
 
    render() {
+      const {isFavourite} = this.state;
       return (
             <div className='record_title inline'>
-               <img className='internal_component' src={require(this.state.isFavourite? '../../../../Images/favourited.png': '../../../../Images/not_favourited.png')} onClick={this.iconClicked}/>
+               <img className='internal_component' alt={isFavourite ? "Favourite item icon" : "Non-favourite item icon"} src={require(isFavourite? '../../../../Images/favourited.png': '../../../../Images/not_favourited.png')} onClick={this.iconClicked}/>
                <div className='right internal_component title_content'>{this.state.content}</div>
             </div>
       );
